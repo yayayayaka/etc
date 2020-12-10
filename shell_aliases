@@ -1,0 +1,70 @@
+#!/bin/sh
+
+for file in $(find "$XDG_CONFIG_HOME" -name "*.alias" 2>/dev/null); do
+	. "$file"
+done
+
+# Colors!
+[ $(uname) = "OpenBSD" ] \
+    && hash colorls >/dev/null 2>&1 \
+    && alias ls="colorls -G"
+alias ip="ip -c"
+for cmd in ls grep diff; do
+	case $($cmd --help 2>&1) in
+	*--color*)
+		alias $cmd="$cmd --color=auto"
+		;;
+	esac
+done
+man () {
+	env LESS_TERMCAP_mb=$'\E[;31m' \
+		LESS_TERMCAP_md=$'\E[;33m' \
+		LESS_TERMCAP_me=$'\E[0m' \
+		LESS_TERMCAP_se=$'\E[0m' \
+		LESS_TERMCAP_so=$'\E[7;33m' \
+		LESS_TERMCAP_ue=$'\E[0m' \
+		LESS_TERMCAP_us=$'\E[01;31m' \
+		man $@
+}
+
+# `bc` with -l is much more useful
+alias bc="bc -ql"
+
+# Add something to clipboard without trailing newline
+# https://unix.stackexchange.com/a/140729
+alias clip='awk '\''NR>1{print PREV} {PREV=$0} END{printf("%s",$0)}'\'' | xclip -selection clipboard'
+
+# Show progress during copy
+[ "$(uname -s)" = "Linux" ] && alias dd="dd status=progress"
+
+# It's quite rare that I want to see the errors when using `find`
+alias find="find 2>/dev/null"
+
+# Shortcuts for commands I use quite often
+alias cl="clear"
+alias df="df -h"
+alias gr="grep"
+alias ipa="ip -c -o a | cut -d ' ' -f2,7 | sed 's/ /\t/'"
+alias kl="killall -9"
+alias l="ls -lhtr"
+alias ll="ls -d */"
+alias la="ls -lhatr"
+alias lsa="ls -a"
+alias mpvv="mpv --video-unscaled"
+alias mdstat="watch -t 'cat /proc/mdstat'"
+alias zzz="hash systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
+
+# Run dmenu with the following font:
+fn="-*-fixed-medium-r-semicondensed-*-13-*-*-*-*-*-iso10646-*"
+alias dmenu="dmenu -fn $fn"
+alias dmenu_run="dmenu_run -fn $fn"
+
+# restart netctl-auto on systemd 
+alias wr="systemctl restart netctl-auto@wlp3s0.service"
+
+# rsync: progressmeter instead of dumping list of files to stdout
+alias rsync="rsync --info=progress2"
+
+# Switch between US-qwerty and US-Workman back and forth
+alias asht="setxkbmap us -option compose:prsc"
+alias asdf="setxkbmap workman -option compose:prsc"
