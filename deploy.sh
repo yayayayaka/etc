@@ -54,20 +54,28 @@ done
 [ -n "$missing" ] && fail "not installed:$missing"
 
 # Setup the checkout directory itself
-mkdir -p "$XDG_CONFIG_HOME" || fail "Unable to create config dir"
-(
-    cd "$XDG_CONFIG_HOME"
-    if ! [ -d .git ]; then
-        git init || fail "Unable to init repo"
-        git remote add -t \* -f origin "$REPOSITORY"
-        git fetch --all || warn "Unable to fetch"
-        git reset --hard origin/"$BRANCH"
-    else
-        # If repo with changes present, bail out
-        git fetch --all || warn "Unable to fetch"
-        git merge --ff-only origin/"$BRANCH" || fail "Local head out of sync"
-    fi
-)
+pull () {
+    local dir="$1"
+    local repo="$2"
+    local branch="$3"
+    mkdir -p "$dir" || fail "Unable to create config dir"
+    (
+        cd "$dir"
+        if ! [ -d .git ]; then
+            git init || fail "Unable to init repo"
+            git remote add -t \* -f origin "$repo"
+            git fetch --all || warn "Unable to fetch"
+            git reset --hard origin/"$branch"
+        else
+            # If repo with changes present, bail out
+            git fetch --all || warn "Unable to fetch"
+            git merge --ff-only origin/"$branch" || fail "Local head out of sync"
+        fi
+    )
+
+}
+pull "$XDG_CONFIG_HOME" "$REPOSITORY" "$BRANCH"
+pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" "$BRANCH"
 
 # Setup default git username and email
 (
@@ -81,7 +89,6 @@ mkdir -p "$XDG_CONFIG_HOME" || fail "Unable to create config dir"
     cd "$HOME"
     dir="${XDG_CONFIG_HOME##$HOME/}"
 
-    ln -sfn "$dir/bin" bin
     ln -sfn "$dir/profile" .profile
     ln -sfn "$dir/git/config" .gitconfig
     mkdir -p ~/.ssh && \
