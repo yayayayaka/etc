@@ -1,0 +1,25 @@
+include "%L"
+
+<Multi_key> <a> <a> : "ä"
+<Multi_key> <A> <A> : "Ä"
+
+<Multi_key> <o> <o> : "ö"
+<Multi_key> <O> <O> : "Ö"
+
+<Multi_key> <u> <u> : "ü"
+<Multi_key> <U> <U> : "Ü"
+
+<Multi_key> <c> <c> : "ć"
+<Multi_key> <C> <C> : "Ć"
+
+<Multi_key> <z> <z> : "ż"
+<Multi_key> <Z> <Z> : "Ż"
+
+<Multi_key> <e> <e> : "ę"
+<Multi_key> <E> <E> : "Ę"
+
+<Multi_key> <l> <l> : "ł"
+<Multi_key> <L> <L> : "Ł"
+
+<Multi_key> <n> <n> : "ń"
+<Multi_key> <N> <N> : "Ń"
