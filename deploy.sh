@@ -21,7 +21,11 @@
 ### Location of the git repository
 REPOSITORY="https://github.com/yayayayaka/etc.git"
 BRANCH="main"
+REMOTE="origin"
 ###
+
+XDG_CONFIG_HOME="$HOME/etc"
+PATH="$HOME/bin:$PATH"
 
 user () {
     printf "[ \\033[0;33m??\\033[0m ] %s\\n" "$1"
@@ -33,11 +37,7 @@ warn () {
 
 fail () {
     echo "FAIL: $1" >&2
-    exit 1
 }
-
-XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/etc}
-PATH="$HOME/bin:$PATH"
 
 # Some quick check to give an early indicator of breakage
 depends="git"
@@ -51,42 +51,45 @@ for i in $depends; do
     hash "$i" >/dev/null 2>&1 \
         || missing="$missing $i"
 done
-[ -n "$missing" ] && fail "not installed:$missing"
+[ -n "$missing" ] && fail "not installed:$missing" && exit 1
 
 # Setup the checkout directory itself
 pull () {
-    local dir="$1"
-    local repo="$2"
-    local branch="$3"
-    mkdir -p "$dir" || fail "Unable to create config dir"
+    dir="$1"
+    repo="$2"
+    branch="$3"
+    mkdir -p "$dir" || (fail "Unable to create config dir" && exit 1)
     (
-        cd "$dir"
+        export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
+        cd "$dir" || (fail "failed to cd into $dir" && exit 1)
         if ! [ -d .git ]; then
-            git init || fail "Unable to init repo"
-            git remote add -t \* -f origin "$repo"
-            git fetch --all || fail "Unable to fetch"
-            git reset --hard origin/"$branch"
+            git init || (fail "Unable to init repo" && exit 1)
+            git remote add -t \* -f "$REMOTE" "$repo"
+            git fetch --all || (fail "Unable to fetch" && exit 1)
+            git reset --hard "$REMOTE/$branch"
         else
             # If repo with changes present, bail out
-            git fetch --all || fail "Unable to fetch"
-            git merge --ff-only origin/"$branch" || fail "Local head out of sync"
+            git fetch --all || (fail "Unable to fetch" && exit 1)
+            git merge --ff-only "$REMOTE/$branch" || (fail "Local head out of sync" && exit 1)
         fi
     )
-
+    unset dir
+    unset repo
+    unset branch
 }
 pull "$XDG_CONFIG_HOME" "$REPOSITORY" "$BRANCH"
-pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" "$BRANCH"
+pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" main
 
 # Setup default git username and email
 (
-    cd "$XDG_CONFIG_HOME"
+    cd "$XDG_CONFIG_HOME" || (fail "Could not cd into $XDG_CONFIG_HOME" && exit 1)
     [ -n "$1" ] && [ -n "$2" ] && \
         sed -e "s/AUTHORNAME/$1/g" -e "s/AUTHOREMAIL/$2/g" git/config.local.example > git/config.local
 )
 
 # Now setup the symlinks in $HOME
 (
-    cd "$HOME"
+    cd "$HOME" || (fail "Could not cd into $HOME" && exit 1)
     dir="${XDG_CONFIG_HOME##$HOME/}"
 
     ln -sfn "$dir/profile" .profile
@@ -140,3 +143,4 @@ mkcrontab|crontab -
     sh "$dir/install.sh"
     ln -sfn "$dir/my_configs.vim" "$HOME/.vim_runtime/my_configs.vim"
 )
+echo "Done."
