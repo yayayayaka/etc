@@ -64,11 +64,11 @@ pull () {
         if ! [ -d .git ]; then
             git init || fail "Unable to init repo"
             git remote add -t \* -f origin "$repo"
-            git fetch --all || warn "Unable to fetch"
+            git fetch --all || fail "Unable to fetch"
             git reset --hard origin/"$branch"
         else
             # If repo with changes present, bail out
-            git fetch --all || warn "Unable to fetch"
+            git fetch --all || fail "Unable to fetch"
             git merge --ff-only origin/"$branch" || fail "Local head out of sync"
         fi
     )
@@ -117,7 +117,22 @@ pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" "$BRANCH"
 
 # Backup existing crontab and then generate my own
 [ -e "$XDG_CONFIG_HOME"/crontab ] || crontab -l > "$XDG_CONFIG_HOME"/crontab
-mkcrontab
+mkcrontab () {
+    cat "$XDG_CONFIG_HOME"/crontab 2>/dev/null
+    dir="$XDG_CONFIG_HOME/periodic"
+    cmd=". $XDG_CONFIG_HOME/profile; run-parts"
+    [ -e "$dir/15min" ] && \
+        echo "*/15 * * * * $cmd $dir/15min"
+    [ -e "$dir/hourly" ] && \
+        echo "0 * * * * $cmd $dir/hourly"
+    [ -e "$dir/daily" ] && \
+        echo "0 2 * * * $cmd $dir/daily"
+    [ -e "$dir/weekly" ] && \
+        echo "0 3 * * 6 $cmd $dir/weekly"
+    [ -e "$dir/monthly" ] && \
+        echo "0 4 1 * * $cmd $dir/monthly"
+}
+mkcrontab|crontab -
 
 # Install amix/vimrc and symlink my config
 (
