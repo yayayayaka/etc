@@ -1,0 +1,56 @@
+set -g default-terminal "screen-256color"
+
+# If you SSH into a host in a tmux window, you'll notice the window
+# title of your terminal emulator remains to be user@localhost
+# rather than user@server. To allow the title bar to adapt to
+# whatever host you connect to, set the following:
+set -g set-titles on
+set -g set-titles-string "#T"
+
+# mouse control (clickable windows, panes, resizable panes)
+set -g mouse on
+
+# Start windows and panes at 1, not 0
+set -g base-index 1
+set -g pane-base-index 1
+
+# Move status bar to the top, add hostname to status bar
+set -g status-position top
+set -g status-right '"#H" %Y-%m-%d %H:%M'
+
+# sane scrolling:
+bind -n WheelUpPane if-shell -F -t = "#{mouse_any_flag}" "send-keys -M" "if -Ft= '#{pane_in_mode}' 'send-keys -M' 'copy-mode -e; send-keys -M'"
+
+
+## Keybindings
+# Add prefix C-a
+unbind C-b
+set -g prefix C-.
+bind-key C-. send-prefix
+set -g prefix2 C-b
+
+# Additionally split panes using | and -, make sure they open in the same path
+bind | split-window -h -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+bind '"' split-window -v -c "#{pane_current_path}"
+
+# vi-like navigation
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+bind H previous-window
+bind L next-window
+
+# Use Alt-arrow keys without prefix key to switch panes
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# open new windows in the current path
+bind c new-window -c "#{pane_current_path}"
+
+# reload config file
+bind r source-file ~/.tmux.conf
