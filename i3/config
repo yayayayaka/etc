@@ -1,0 +1,262 @@
+# Basics
+default_orientation auto
+workspace_layout tabbed
+
+# modifier key
+set $mod Mod4
+
+# Keybindings
+## i3
+### reload
+bindsym $mod+Shift+c reload
+### restart
+bindsym $mod+Shift+r restart
+### exit
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+
+## start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+for_window [class="urxvt" role="Floating-terminal"] floating enable, resize grow left 100, resize grow right 100, resize grow down 100, resize grow up 100;
+bindsym $mod+BackSpace exec --role Floating-terminal i3-sensible-terminal 
+
+## app launching: rofi (dmenu replacement)
+bindsym $mod+d exec rofi -show run
+
+## Password manager
+bindsym $mod+q exec passmenu
+
+## lock screen: i3lock
+bindsym $mod+Shift+BackSpace exec i3lock
+
+## kill focused window
+bindsym $mod+Shift+q kill
+
+## bc in a floating terminal (doesn't work, need to find out why)
+#bindsym $mod+c exec --role Floating-terminal i3-sensible-terminal -e bash -c bc 
+
+
+## media keys
+bindsym XF86Launch1 exec --no-startup-id ${XDG_CONFIG_HOME}/bin/xrandr.sh && sleep 1 && ${XDG_CONFIG_HOME}/polybar/launch.sh && sleep 1 && nitrogen --restore
+
+bindsym XF86AudioMute exec --no-startup-id volume mute
+bindsym XF86AudioRaiseVolume exec --no-startup-id volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id volume down
+bindsym XF86AudioMicMute exec --no-startup-id volume toggle_mic
+
+bindsym XF86MonBrightnessUp exec xbacklight -inc 5 -time 200 -steps 1
+bindsym XF86MonBrightnessDown exec xbacklight -dec 5 -time 200 -steps 1
+
+#bindsym XF86Eject exec eject
+
+
+## Changing focus
+### using arrows and hjkl
+bindsym $mod+Left focus left
+bindsym $mod+h focus left
+bindsym $mod+Down focus down
+bindsym $mod+j focus down
+bindsym $mod+Up focus up
+bindsym $mod+k focus up
+bindsym $mod+Right focus right
+bindsym $mod+l focus right
+
+### between workspaces
+bindsym $mod+n workspace next
+bindsym $mod+b workspace prev
+bindsym $mod+Ctrl+Left workspace prev
+bindsym $mod+Ctrl+Right workspace next
+bindsym $mod+minus workspace prev
+bindsym $mod+equal workspace next
+
+### by using $mod+Number
+bindsym $mod+grave workspace 0
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+### to the parent container
+bindsym $mod+a focus parent
+
+### to the urgent window
+bindsym $mod+x [urgent=latest] focus
+
+
+## Moving
+
+### Windows
+#### that are in focus
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+l move right
+
+#### that are floating (use Mouse+$mod to drag floating windows to their wanted position)
+floating_modifier $mod
+
+
+### Workpaces
+#### between monitors
+bindsym $mod+Tab exec $HOME/bin/i3-display-swap.sh
+
+
+### Containters
+#### to a differernt Workspace
+bindsym $mod+Shift+grave move container to workspace 0
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+#### to another screen
+bindsym $mod+Mod1+Left move workspace to output left
+bindsym $mod+Mod1+H move workspace to output left
+bindsym $mod+Mod1+Right move workspace to output right
+bindsym $mod+Mod1+L move workspace to output right
+
+
+## Manipulating the layout
+
+### Toggle
+#### fullscreen
+bindsym $mod+f fullscreen
+
+#### between tiling / floating
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+
+### Changing
+#### containter layout
+##### sticky
+bindsym $mod+s sticky toggle 
+##### tabbed
+bindsym $mod+w layout tabbed
+##### split
+bindsym $mod+e layout toggle split
+
+
+### Splitting
+#### in vertical/horizontal orientation
+bindsym $mod+g split v
+bindsym $mod+v split h
+
+
+### Resizing
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 1 px or 1 ppt
+        bindsym j resize grow height 1 px or 1 ppt
+        bindsym k resize shrink height 1 px or 1 ppt
+        bindsym l resize grow width 1 px or 1 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Right resize shrink width 1 px or 1 ppt
+        bindsym Up resize grow height 1 px or 1 ppt
+        bindsym Down resize shrink height 1 px or 1 ppt
+        bindsym Left resize grow width 1 px or 1 ppt
+ 
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+
+
+# Window behaviour
+## Window assignments
+assign [class="Thunderbird"] 0
+no_focus [class="Thunderbird"]
+
+assign [class="Firefox"] 1
+
+assign [class="element"] 2
+no_focus [class="element"]
+
+assign [class="discord"] 2
+no_focus [class="discord"]
+
+assign [class="TelegramDesktop"] 2
+no_focus [class="TelegramDesktop"]
+
+assign [class="whatsapp"] 2
+no_focus [class="whatsapp"]
+
+assign [class="uwu"] 2
+no_focus [class="uwu"]
+
+assign [class="pocketcasts"] 10
+no_focus [class="pocketcasts"]
+
+## Output assignments
+workspace 0 output HDMI1 HDMI2 LVDS1
+workspace 1 output HDMI1 HDMI2 LVDS1
+workspace 2 output VGA1 LVDS1
+
+
+## Float the following windows
+for_window [class="Gcolor2"] floating enable
+for_window [class="Pinentry"] floating enable
+for_window [class="Nautilus" instance="file_progress"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="Open Files"] floating enable
+
+
+## Sticky the following windows
+for_window [window_role="PictureInPicture"] sticky enable
+
+
+## Set Border for each window to 1px
+new_float normal
+default_floating_border normal 1
+default_border normal 1
+### except for feh
+for_window [class="feh"] border normal 
+
+
+
+# Misc
+popup_during_fullscreen smart
+hide_edge_borders smart
+
+
+
+# i3bar
+bar {
+    i3bar_command ${XDG_CONFIG_HOME}/polybar/launch.sh
+}
+
+
+
+# Autostart
+exec workstation.sh
+exec thunderbird
+exec firefox-esr
+exec telegram-desktop
+exec discord
+exec element
