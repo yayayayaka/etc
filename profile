@@ -10,22 +10,11 @@ export VISUAL
 mkdir -p "$XDG_RUNTIME_DIR" "$HOME/.cache"
 umask 027
 
-# Define preferred order of editors
-for VISUAL in vim nano vi; do
-    hash "$VISUAL" >/dev/null 2>&1 && break
+
+# load drop-ins
+for f in "$XDG_CONFIG_HOME"/profile.d/*; do
+    [ -e "$f"  ] && . "$f"
 done
-export EDITOR="$VISUAL" # pass(1) relies on EDITOR
 
-# OS specific configuration
-if [ "$(uname)" = "Linux" ]; then
-    for dev in /sys/class/net/*; do
-        [ -d "/sys/class/net/$dev/wireless" ] && export WIRELESS_IF=$dev
-    done
-elif [ "$(uname)" = "OpenBSD" ]; then
-    export LC_CTYPE="en_US.UTF-8"
-fi
-
-[ -f "$XDG_CONFIG_HOME/profile.local" ] && . "$XDG_CONFIG_HOME/profile.local"
 [ -n "$BASH_VERSION" ] && . "$ENV"
 [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
-

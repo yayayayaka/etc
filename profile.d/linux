@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Linux specific configuration
+if [ "$(uname)" = "Linux" ]; then
+    # Try to guess the wireless interface
+    #
+    # The enviroment variable is currently used by polybar in
+    # order to display the status of the wifi connection.
+    # This might not work (anymore) though and I need to look
+    # at this again sometime in the future.
+    for dev in /sys/class/net/*; do
+        [ -d "/sys/class/net/$dev/wireless" ] && export WIRELESS_IF=$dev
+    done
+fi
