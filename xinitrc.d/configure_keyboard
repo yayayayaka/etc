@@ -1,0 +1,4 @@
+#!/bin/sh
+
+setxkbmap us workman -option compose:prsc \
+    || setxkbmap us -option compose:prsc
