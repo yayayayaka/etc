@@ -5,16 +5,9 @@ case "$-" in
     *) return ;;
 esac
 
-[ "$(echo $TERM)" = "rxvt-unicode" ] && export TERM=rxvt-unicode-256color
 
-if [ -n "$BASH_VERSION" ]; then
-    . "$XDG_CONFIG_HOME/bashrc"
-fi
+# load drop-ins
+for f in "$ENV".d/*; do
+    [ -e "$f"  ] && . "$f"
+done
 
-[ -f "$XDG_CONFIG_HOME/shell_aliases" ] && . "$XDG_CONFIG_HOME/shell_aliases"
-[ -f "$XDG_CONFIG_HOME/shell_aliases.local" ] && . "$XDG_CONFIG_HOME/shell_aliases.local"
-
-newpass () {
-    length="$1"
-    head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$length" ; echo ''
-}

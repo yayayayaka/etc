@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Set the term to rxvt-unicode-256color to make remote sessions happy
+[ "$TERM" = "rxvt-unicode" ] && export TERM=rxvt-unicode-256color

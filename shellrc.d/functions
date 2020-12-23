@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Generate a random alphanumeric sequence
+newpass () {
+    length="$1"
+    head /dev/urandom | tr -dc A-Za-z0-9 | head -c "$length" ; echo ''
+}
