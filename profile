@@ -2,7 +2,7 @@
 # login code for bourne-like shells
 hostname="$(uname -n)"; export HOSTNAME="$hostname"
 export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-$HOME/.run/$HOSTNAME}"
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/etc}"
 export PATH="$XDG_CONFIG_HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export ENV="$XDG_CONFIG_HOME/shellrc"
 export NO_AT_BRIDGE=1 # Suppress useless Gnome warnings
