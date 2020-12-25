@@ -17,8 +17,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 ## start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
-for_window [class="urxvt" role="Floating-terminal"] floating enable, resize grow left 100, resize grow right 100, resize grow down 100, resize grow up 100;
-bindsym $mod+BackSpace exec --role Floating-terminal i3-sensible-terminal 
+for_window [class="URxvt" instance="Floating_terminal"] floating enable, resize grow left 100, resize grow right 100, resize grow down 100, resize grow up 100;
+bindsym $mod+BackSpace exec urxvt -name Floating_terminal
 
 ## app launching: rofi (dmenu replacement)
 bindsym $mod+d exec rofi -show run
