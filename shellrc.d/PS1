@@ -1,6 +1,10 @@
 #!/bin/sh
 
-## PS1 configuration
+# PS1 configuration
+
+SIGN="\$"
+[ "$(whoami)" = "root" ] && SIGN="#"
+
 # get current branch in git repo
 parse_git_branch () {
     BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
@@ -49,8 +53,8 @@ parse_git_dirty () {
 }
 
 if hash git >/dev/null 2>&1; then
-    export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~}$(parse_git_branch) \\$ '
+    export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~}$(parse_git_branch) $SIGN '
 else
-    export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~} \\$ '
+    export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~} $SIGN '
 fi
 
