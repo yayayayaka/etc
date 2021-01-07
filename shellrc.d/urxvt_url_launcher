@@ -1,3 +1,0 @@
-#!/bin/sh
-
-echo "URxvt.url-launcher: $HOME/bin/xdg-open" | xrdb -merge "$XDG_CONFIG_HOME/Xdefaults"
