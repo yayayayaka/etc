@@ -74,3 +74,6 @@ alias rsync="rsync --info=progress2"
 alias asht="setxkbmap us -option compose:prsc"
 alias asdf="setxkbmap workman -option compose:prsc"
 
+# Switch between US Workman and Russian (phonetic) back and forth
+alias qdrw="setxkbmap ru phonetic"
+alias асдф="setxkbmap us workman -option compose:prsc"
