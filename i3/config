@@ -64,8 +64,6 @@ bindsym $mod+l focus right
 ### between workspaces
 bindsym $mod+n workspace next
 bindsym $mod+b workspace prev
-bindsym $mod+Ctrl+Left workspace prev
-bindsym $mod+Ctrl+Right workspace next
 bindsym $mod+minus workspace prev
 bindsym $mod+equal workspace next
 
@@ -126,9 +124,9 @@ bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
 #### to another screen
-bindsym $mod+Mod1+Left move workspace to output left
+bindsym $mod+Ctrl+Left move workspace to output left
 bindsym $mod+Mod1+H move workspace to output left
-bindsym $mod+Mod1+Right move workspace to output right
+bindsym $mod+Ctrl+Right move workspace to output right
 bindsym $mod+Mod1+L move workspace to output right
 
 
