@@ -1,0 +1,38 @@
+# Configuration
+host *
+    AddKeysToAgent yes
+    ConnectTimeout 10
+    Include config.priv
+    Include config.local
+
+Host tor-* *.onion
+    ProxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
+    CheckHostIP  no
+    Compression  yes
+
+# Servers
+## remote
+host owo
+    hostname 78.47.242.158
+    user naka
+
+host nix nix.uwu.is
+    hostname 78.47.171.53
+    user lara
+
+# Services / projects
+host github.com/yayayayaka
+    user git
+    hostname github.com
+
+# TextBoards
+host einchan
+    user einchan
+    hostname ein.blue
+    ProxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
+
+host onthewifi whisper
+    user bit 
+    hostname whisper.onthewifi.com
+    ProxyCommand nc -X 5 -x 127.0.0.1:9050 %h %p
+
