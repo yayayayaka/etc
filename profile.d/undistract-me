@@ -1,0 +1,2 @@
+[ -f  /etc/profile.d/undistract-me.sh ] \
+    && . /etc/profile.d/undistract-me.sh
