@@ -1,0 +1,2 @@
+#!/bin/sh
+[ -f /usr/lib/xfce4/notifyd/xfce4-notifyd ] && /usr/lib/xfce4/notifyd/xfce4-notifyd >/dev/null 2>&1 &
