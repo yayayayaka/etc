@@ -19,13 +19,21 @@
 #   $ ssh somewhere 'cat| sh /dev/stdin arg1 arg2' < deploy.sh
 
 ### Location of the git repository
-REPOSITORY="https://github.com/yayayayaka/etc.git"
-BRANCH="main"
+ETC_REPO="https://github.com/yayayayaka/etc.git"
+BIN_REPO="https://github.com/yayayayaka/bin.git"
 REMOTE="origin"
+DELFAULT_BRANCH="main"
 ###
 
-XDG_CONFIG_HOME="$HOME/etc"
+
+### Default locations of the dotfiles and scripts dir
+ETC_DIR="$HOME/etc"
+BIN_DIR="$HOME/bin"
 PATH="$HOME/bin:$PATH"
+
+XDG_CONFIG_HOME="$HOME/.config"
+###
+
 
 user () {
     printf "[ \\033[0;33m??\\033[0m ] %s\\n" "$1"
@@ -38,6 +46,8 @@ warn () {
 fail () {
     echo "FAIL: $1" >&2
 }
+
+mkdir -p "$XDG_CONFIG_HOME" || (fail "unable to mkdir $XDG_CONFIG_HOME"; exit 1)
 
 # Some quick check to give an early indicator of breakage
 depends="git"
@@ -52,6 +62,7 @@ for i in $depends; do
         || missing="$missing $i"
 done
 [ -n "$missing" ] && fail "not installed:$missing" && exit 1
+
 
 # Setup the checkout directory itself
 pull () {
@@ -77,20 +88,22 @@ pull () {
     unset repo
     unset branch
 }
-pull "$XDG_CONFIG_HOME" "$REPOSITORY" "$BRANCH"
-pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" main
+pull "$ETC_DIR" "$ETC_REPO" "$DELFAULT_BRANCH"
+pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
+
 
 # Setup default git username and email
 (
-    cd "$XDG_CONFIG_HOME" || (fail "Could not cd into $XDG_CONFIG_HOME" && exit 1)
+    cd "$ETC_DIR" || (fail "Could not cd into $ETC_DIR" && exit 1)
     [ -n "$1" ] && [ -n "$2" ] && \
         sed -e "s/AUTHORNAME/$1/g" -e "s/AUTHOREMAIL/$2/g" git/config.local.example > git/config.local
 )
 
+
 # Now setup the symlinks in $HOME
 (
     cd "$HOME" || (fail "Could not cd into $HOME" && exit 1)
-    dir="${XDG_CONFIG_HOME##$HOME/}"
+    dir="${ETC_DIR##$HOME/}"
 
     ln -sfn "$dir/profile" .profile
     ln -sfn "$dir/git/config" .gitconfig
@@ -118,6 +131,18 @@ pull "$HOME/bin" "https://github.com/yayayayaka/bin.git" main
     fi
 )
 
+
+# Symlink everything to XDG_CONFIG_HOME
+(
+    cd "$HOME" || (fail "Could not cd into $HOME" && exit 1)
+    dir="${ETC_DIR##$HOME/}"
+
+    for file in "$dir"/*; do
+        ln -sfn -t "${XDG_CONFIG_HOME##$HOME/}/" "../$file"
+    done
+)
+
+
 # Backup existing crontab and then generate my own
 [ -e "$XDG_CONFIG_HOME"/crontab ] || crontab -l > "$XDG_CONFIG_HOME"/crontab
 mkcrontab () {
@@ -137,10 +162,12 @@ mkcrontab () {
 }
 mkcrontab|crontab -
 
-# Install amix/vimrc and symlink my config
+
+# Install amix/vimrc and symlink my adjustments
 (
-    dir="$XDG_CONFIG_HOME/vim"
+    dir="$ETC_DIR/vim"
     sh "$dir/install.sh"
     ln -sfn "$dir/my_configs.vim" "$HOME/.vim_runtime/my_configs.vim"
 )
 echo "Done."
+
