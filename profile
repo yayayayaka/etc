@@ -1,12 +1,11 @@
 #!/bin/sh
 # login code for bourne-like shells
 hostname="$(uname -n)"; export HOSTNAME="$hostname"
-export XDG_RUNTIME_DIR="${$HOME/.run/$HOSTNAME}"
-export XDG_CONFIG_HOME="${$HOME/.config}"
-export XDG_DATA_HOME="${$HOME/.local/share}"
+export XDG_RUNTIME_DIR="$HOME/.run/$HOSTNAME"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
 export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 export ENV="$XDG_CONFIG_HOME/shellrc"
-export NO_AT_BRIDGE=1 # Suppress useless Gnome warnings
 export VISUAL
 mkdir -p "$XDG_RUNTIME_DIR" "$HOME/.cache"
 umask 027
