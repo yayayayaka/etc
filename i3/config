@@ -255,6 +255,4 @@ bar {
 exec workstation.sh
 exec thunderbird
 exec firefox-esr
-exec telegram-desktop
-exec discord
-exec element
+exec telegram-yayaka
