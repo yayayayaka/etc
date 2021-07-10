@@ -2,7 +2,7 @@
 
 # Find and source *.alias files
 tmp=/tmp/tmpaliases
-find "$XDG_CONFIG_HOME" -name "*.alias" 2>/dev/null >"$tmp"
+find "$ETC_DIR" -name "*.alias" 2>/dev/null >"$tmp"
 while IFS= read -r file; do . "$file"; done < "$tmp"
 rm "$tmp"
 

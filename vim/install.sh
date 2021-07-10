@@ -3,7 +3,7 @@ set -e
 
 git clone --depth=1 git://github.com/amix/vimrc.git ~/.vim_runtime
 
-ln -sfn $XDG_CONFIG_HOME/vim/my_configs.vim ~/.vim_runtime/
+ln -sfn $ETC_DIR/vim/my_configs.vim ~/.vim_runtime/
 
 cd ~/.vim_runtime
 echo 'set runtimepath+=~/.vim_runtime

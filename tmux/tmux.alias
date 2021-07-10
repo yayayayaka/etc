@@ -1,1 +1,1 @@
-alias tmux="tmux -u -f "\""${XDG_CONFIG_HOME}"\""/tmux/config"
+alias tmux="tmux -u -f ${ETC_DIR}/tmux/config"

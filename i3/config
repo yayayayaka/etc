@@ -37,7 +37,7 @@ bindsym $mod+Shift+q kill
 
 
 ## media keys
-bindsym XF86Launch1 exec --no-startup-id ~/bin/xrandr.sh && sleep 1 && ${XDG_CONFIG_HOME}/polybar/launch.sh && sleep 1 && nitrogen --restore
+bindsym XF86Launch1 exec --no-startup-id ~/bin/xrandr.sh && sleep 1 && ${ETC_DIR}/polybar/launch.sh && sleep 1 && nitrogen --restore
 
 bindsym XF86AudioMute exec --no-startup-id volume mute
 bindsym XF86AudioRaiseVolume exec --no-startup-id volume up
@@ -246,7 +246,7 @@ hide_edge_borders smart
 
 # i3bar
 bar {
-    i3bar_command ${XDG_CONFIG_HOME}/polybar/launch.sh
+    i3bar_command ${ETC_DIR}/polybar/launch.sh
 }
 
 

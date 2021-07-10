@@ -2,7 +2,7 @@
 [ -z "$ENV" ] && . ~/.profile
 
 # Load drop-ins
-for f in "$XDG_CONFIG_HOME"/xinitrc.d/*; do
+for f in "$ETC_DIR"/xinitrc.d/*; do
     [ -e "$f"  ] && . "$f"
 done
 

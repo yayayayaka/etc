@@ -1,6 +1,6 @@
 #!/bin/sh
 
-for file in $(find "$XDG_CONFIG_HOME" -name "*.alias" 2>/dev/null); do
+for file in $(find "$ETC_DIR" -name "*.alias" 2>/dev/null); do
 	. "$file"
 done
 

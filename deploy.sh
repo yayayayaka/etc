@@ -144,11 +144,11 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
 
 # Backup existing crontab and then generate my own
-[ -e "$XDG_CONFIG_HOME"/crontab ] || crontab -l > "$XDG_CONFIG_HOME"/crontab
+[ -e "$ETC_DIR"/crontab ] || crontab -l > "$ETC_DIR"/crontab
 mkcrontab () {
-    cat "$XDG_CONFIG_HOME"/crontab 2>/dev/null
-    dir="$XDG_CONFIG_HOME/periodic"
-    cmd=". $XDG_CONFIG_HOME/profile; run-parts"
+    cat "$ETC_DIR"/crontab 2>/dev/null
+    dir="$ETC_DIR/periodic"
+    cmd=". $ETC_DIR/profile; run-parts"
     [ -e "$dir/15min" ] && \
         echo "*/15 * * * * $cmd $dir/15min"
     [ -e "$dir/hourly" ] && \
