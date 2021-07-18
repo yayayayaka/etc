@@ -58,6 +58,7 @@ alias lsa="ls -a"
 alias mpvv="mpv --video-unscaled"
 alias mdstat="watch -t 'cat /proc/mdstat'"
 alias zzz="hash systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
+alias rs="rsync -a --info=progress2"
 
 # Run dmenu with the following font:
 fn="-*-fixed-medium-r-semicondensed-*-13-*-*-*-*-*-iso10646-*"
