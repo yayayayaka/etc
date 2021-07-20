@@ -254,5 +254,5 @@ bar {
 # Autostart
 exec workstation.sh
 exec thunderbird
-exec firefox-esr
+exec ff
 exec telegram-yayaka
