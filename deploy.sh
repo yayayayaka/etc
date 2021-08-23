@@ -45,9 +45,10 @@ warn () {
 
 fail () {
     echo "FAIL: $1" >&2
+    exit 1
 }
 
-mkdir -p "$XDG_CONFIG_HOME" || (fail "unable to mkdir $XDG_CONFIG_HOME"; exit 1)
+mkdir -p "$XDG_CONFIG_HOME" || fail "unable to mkdir $XDG_CONFIG_HOME"
 
 # Some quick check to give an early indicator of breakage
 depends="git"
@@ -61,7 +62,7 @@ for i in $depends; do
     hash "$i" >/dev/null 2>&1 \
         || missing="$missing $i"
 done
-[ -n "$missing" ] && fail "not installed:$missing" && exit 1
+[ -n "$missing" ] && fail "not installed:$missing"
 
 
 # Setup the checkout directory itself
@@ -69,19 +70,19 @@ pull () {
     dir="$1"
     repo="$2"
     branch="$3"
-    mkdir -p "$dir" || (fail "Unable to create config dir" && exit 1)
+    mkdir -p "$dir" || fail "Unable to create config dir"
     (
         export GIT_SSH_COMMAND="ssh -o StrictHostKeyChecking=no"
-        cd "$dir" || (fail "failed to cd into $dir" && exit 1)
+        cd "$dir" || fail "failed to cd into $dir"
         if ! [ -d .git ]; then
-            git init || (fail "Unable to init repo" && exit 1)
+            git init || fail "Unable to init repo"
             git remote add -t \* -f "$REMOTE" "$repo"
-            git fetch --all || (fail "Unable to fetch" && exit 1)
+            git fetch --all || fail "Unable to fetch"
             git reset --hard "$REMOTE/$branch"
         else
             # If repo with changes present, bail out
-            git fetch --all || (fail "Unable to fetch" && exit 1)
-            git merge --ff-only "$REMOTE/$branch" || (fail "Local head out of sync" && exit 1)
+            git fetch --all || fail "Unable to fetch"
+            git merge --ff-only "$REMOTE/$branch" || fail "Local head out of sync"
         fi
     )
     unset dir
@@ -94,7 +95,7 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
 # Setup default git username and email
 (
-    cd "$ETC_DIR" || (fail "Could not cd into $ETC_DIR" && exit 1)
+    cd "$ETC_DIR" || fail "Could not cd into $ETC_DIR"
     [ -n "$1" ] && [ -n "$2" ] && \
         sed -e "s/AUTHORNAME/$1/g" -e "s/AUTHOREMAIL/$2/g" git/config.local.example > git/config.local
 )
@@ -102,7 +103,7 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
 # Now setup the symlinks in $HOME
 (
-    cd "$HOME" || (fail "Could not cd into $HOME" && exit 1)
+    cd "$HOME" || fail "Could not cd into $HOME"
     dir="${ETC_DIR##$HOME/}"
 
     ln -sfn "$dir/profile" .profile
@@ -134,7 +135,7 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
 # Symlink everything to XDG_CONFIG_HOME
 (
-    cd "$HOME" || (fail "Could not cd into $HOME" && exit 1)
+    cd "$HOME" || fail "Could not cd into $HOME"
     dir="${ETC_DIR##$HOME/}"
 
     for file in "$dir"/*; do
