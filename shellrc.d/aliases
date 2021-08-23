@@ -1,22 +1,31 @@
 #!/bin/sh
 
-for file in $(find "$ETC_DIR" -name "*.alias" 2>/dev/null); do
-	. "$file"
-done
+# Find and source *.alias files
+tmp=$(mktemp)
+find "$ETC_DIR" -name "*.alias" 2>/dev/null >"$tmp"
+while IFS= read -r file; do 
+    . "$file"
+done < "$tmp"
+rm "$tmp"
 
-# Colors!
-[ $(uname) = "OpenBSD" ] \
-    && hash colorls >/dev/null 2>&1 \
-    && alias ls="colorls -G"
-alias ip="ip -c"
+# Colors :)
 for cmd in ls grep diff; do
 	case $($cmd --help 2>&1) in
 	*--color*)
+        # shellcheck disable=SC2139
 		alias $cmd="$cmd --color=auto"
 		;;
 	esac
 done
+
+alias ip="ip -c"
+
+if [ "$(uname)" = "OpenBSD" ]; then
+    hash colorls >/dev/null 2>&1 && alias ls="colorls -G"
+fi
+
 man () {
+    # todo fix SC3003
 	env LESS_TERMCAP_mb=$'\E[;31m' \
 		LESS_TERMCAP_md=$'\E[;33m' \
 		LESS_TERMCAP_me=$'\E[0m' \
@@ -52,7 +61,7 @@ alias la="ls -lhatr"
 alias lsa="ls -a"
 alias mpvv="mpv --video-unscaled"
 alias mdstat="watch -t 'cat /proc/mdstat'"
-alias zzz="hash systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
+alias zzz="command -v systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
 
 # Run dmenu with the following font:
 fn="-*-fixed-medium-r-semicondensed-*-13-*-*-*-*-*-iso10646-*"
