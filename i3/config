@@ -1,6 +1,6 @@
 # Basics
 default_orientation auto
-workspace_layout tabbed
+workspace_layout default
 
 # modifier key
 set $mod Mod4
