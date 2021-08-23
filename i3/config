@@ -254,5 +254,3 @@ bar {
 # Autostart
 exec workstation.sh
 exec thunderbird
-exec ff
-exec telegram-yayaka
