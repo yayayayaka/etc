@@ -61,6 +61,7 @@ alias la="ls -lhatr"
 alias lsa="ls -a"
 alias mpvv="mpv --video-unscaled"
 alias mdstat="watch -t 'cat /proc/mdstat'"
+alias use="nix-shell -p"
 alias zzz="command -v systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
 
 # Run dmenu with the following font:
@@ -70,6 +71,7 @@ alias dmenu_run="dmenu_run -fn $fn"
 
 # restart netctl-auto on systemd 
 alias wr="systemctl restart netctl-auto@wlp3s0.service"
+alias ws="systemctl stop netctl-auto@wlp3s0.service"
 
 # rsync: progressmeter instead of dumping list of files to stdout
 alias rsync="rsync --info=progress2"
