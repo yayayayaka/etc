@@ -108,8 +108,10 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
     ln -sfn "$dir/profile" .profile
     ln -sfn "$dir/git/config" .gitconfig
-    mkdir -p ~/.ssh && \
-        ln -sfn "$dir/ssh/config" ~/.ssh/config
+    mkdir -p ~/.ssh
+    ln -sfn "../$dir/ssh/config" ~/.ssh/config
+    [ -f "$dir/ssh/config.priv" ] && \
+        ln -sfn "../$dir/ssh/config.priv" ~/.ssh/config.priv
 
     if hash bash >/dev/null 2>&1; then
         ln -sfn "$dir/profile" .bash_profile
