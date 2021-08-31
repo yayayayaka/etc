@@ -108,30 +108,28 @@ pull "$BIN_DIR" "$BIN_REPO" "$DELFAULT_BRANCH"
 
     ln -sfn "$dir/profile" .profile
     ln -sfn "$dir/git/config" .gitconfig
+
+    # ssh
     mkdir -p ~/.ssh
     ln -sfn "../$dir/ssh/config" ~/.ssh/config
     [ -f "$dir/ssh/config.priv" ] && \
         ln -sfn "../$dir/ssh/config.priv" ~/.ssh/config.priv
 
-    if hash bash >/dev/null 2>&1; then
-        ln -sfn "$dir/profile" .bash_profile
-        ln -sfn "$dir/shellrc" .bashrc
-    fi
+    # bash
+    ln -sfn "$dir/profile" .bash_profile
+    ln -sfn "$dir/shellrc" .bashrc
 
-    if hash zsh >/dev/null 2>&1; then
-        ln -sfn "$dir/profile" .zprofile
-        ln -sfn "$dir/shellrc" .zshrc
-    fi
+    # zsh
+    ln -sfn "$dir/profile" .zprofile
+    ln -sfn "$dir/shellrc" .zshrc
 
-    if hash ksh >/dev/null 2>&1; then
-        ln -sfn "$dir/shellrc" .kshrc
-    fi
+    # ksh
+    ln -sfn "$dir/shellrc" .kshrc
 
-    if hash startx >/dev/null 2>&1; then
-        ln -sfn "$dir/xinitrc" .xinitrc
-        ln -sfn "$dir/XCompose" .XCompose
-        ln -sfn "$dir/Xdefaults" .Xdefaults
-    fi
+    # xorg
+    ln -sfn "$dir/xinitrc" .xinitrc
+    ln -sfn "$dir/XCompose" .XCompose
+    ln -sfn "$dir/Xdefaults" .Xdefaults
 )
 
 
