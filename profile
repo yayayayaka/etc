@@ -24,5 +24,5 @@ for f in "$ETC_DIR"/profile.d/*; do
     [ -e "$f"  ] && . "$f"
 done
 
-[ -n "$BASH_VERSION" ] && . "$ENV"
+. "$ENV"
 [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ] && exec startx
