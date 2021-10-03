@@ -9,16 +9,15 @@ done < "$tmp"
 rm "$tmp"
 
 # Colors :)
-for cmd in ls grep diff; do
-	case $($cmd --help 2>&1) in
-	*--color*)
-        # shellcheck disable=SC2139
-		alias $cmd="$cmd --color=auto"
-		;;
-	esac
-done
-
 alias ip="ip -c"
+for cmd in ls grep diff; do
+    case $($cmd --help 2>&1) in
+    *--color*)
+        # shellcheck disable=SC2139
+        alias $cmd="$cmd --color=auto"
+        ;;
+    esac
+done
 
 if [ "$(uname)" = "OpenBSD" ]; then
     which colorls >/dev/null 2>&1 && alias ls="colorls -G"
@@ -26,14 +25,14 @@ fi
 
 man () {
     # todo fix SC3003
-	env LESS_TERMCAP_mb=$'\E[;31m' \
-		LESS_TERMCAP_md=$'\E[;33m' \
-		LESS_TERMCAP_me=$'\E[0m' \
-		LESS_TERMCAP_se=$'\E[0m' \
-		LESS_TERMCAP_so=$'\E[7;33m' \
-		LESS_TERMCAP_ue=$'\E[0m' \
-		LESS_TERMCAP_us=$'\E[01;31m' \
-		man $@
+    env LESS_TERMCAP_mb=$'\E[;31m' \
+        LESS_TERMCAP_md=$'\E[;33m' \
+        LESS_TERMCAP_me=$'\E[0m' \
+        LESS_TERMCAP_se=$'\E[0m' \
+        LESS_TERMCAP_so=$'\E[7;33m' \
+        LESS_TERMCAP_ue=$'\E[0m' \
+        LESS_TERMCAP_us=$'\E[01;31m' \
+        man $@
 }
 
 # `bc` with -l is much more useful
@@ -61,6 +60,9 @@ alias la="ls -lhatr"
 alias lsa="ls -a"
 alias mpvv="mpv --video-unscaled"
 alias mdstat="watch -t 'cat /proc/mdstat'"
+run () {
+    nix-shell -p "$1" --run "$1"
+}
 alias use="nix-shell -p"
 alias zzz="command -v systemctl >/dev/null 2>&1 && systemctl suspend || pm-suspend"
 
