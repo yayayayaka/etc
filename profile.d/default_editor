@@ -2,6 +2,6 @@
 
 # Define the preferred order of editors
 for VISUAL in vim nano vi; do
-    hash "$VISUAL" >/dev/null 2>&1 && break
+    which "$VISUAL" >/dev/null 2>&1 && break
 done
 export EDITOR="$VISUAL" # pass(1) relies on EDITOR

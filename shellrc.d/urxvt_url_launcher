@@ -1,6 +1,6 @@
 #!/bin/sh
 # Overrides the urxvt url-launcher property.
 # I forgot the reason why I outsourced this to a separate file...
-if hash xrdb >/dev/null 2>&1; then
+if which xrdb >/dev/null 2>&1; then
     echo "URxvt.url-launcher: $HOME/bin/xdg-open" | xrdb -merge
 fi

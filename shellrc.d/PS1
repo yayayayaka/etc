@@ -52,7 +52,7 @@ parse_git_dirty () {
     fi
 }
 
-if hash git >/dev/null 2>&1; then
+if which git >/dev/null 2>&1; then
     export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~}$(parse_git_branch) $SIGN '
 else
     export PS1='$(whoami)@$(hostname):${PWD/$HOME/\~} $SIGN '

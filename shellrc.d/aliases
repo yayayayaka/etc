@@ -21,7 +21,7 @@ done
 alias ip="ip -c"
 
 if [ "$(uname)" = "OpenBSD" ]; then
-    hash colorls >/dev/null 2>&1 && alias ls="colorls -G"
+    which colorls >/dev/null 2>&1 && alias ls="colorls -G"
 fi
 
 man () {

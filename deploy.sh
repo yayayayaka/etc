@@ -55,11 +55,11 @@ depends="git"
 recommends="run-parts crontab curl"
 missing=""
 for i in $recommends; do
-    hash "$i" >/dev/null 2>&1 \
+    which "$i" >/dev/null 2>&1 \
         || warn "not installed: $i"
 done
 for i in $depends; do
-    hash "$i" >/dev/null 2>&1 \
+    which "$i" >/dev/null 2>&1 \
         || missing="$missing $i"
 done
 [ -n "$missing" ] && fail "not installed:$missing"

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if hash ssh-agent >/dev/null 2>&1; then
+if which ssh-agent >/dev/null 2>&1; then
     export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent$DISPLAY.sck"
     rm "$SSH_AUTH_SOCK"
     ssh-agent -d -a "$SSH_AUTH_SOCK" &
