@@ -12,10 +12,6 @@ Host tor-* *.onion
 
 # Servers
 ## remote
-host owo
-    hostname 78.47.242.158
-    user naka
-
 host nix nix.uwu.is
     hostname 78.47.171.53
     user lara
